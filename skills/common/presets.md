@@ -1,5 +1,8 @@
 # 编码器预设与工具链参考数据
 
+> ⚠️ 本文件中的编码器参数（如 `--crf`、`--preset`、`--bframes` 等）是**跨平台通用**的。
+> 仅管道命令模板和变量语法需要根据目标平台转换，参见 `common/platform.md`。
+
 ## 工具链组合（Pipe Presets）
 
 共 15 种上游×下游组合：
@@ -40,12 +43,17 @@ RAW 管道:
 
 ### 上游命令模板
 
-```
-ffmpeg:      "{upstream}" %ffmpeg_params% -f yuv4mpegpipe -an -strict unofficial - | "{downstream}" {pipe_arg} %{encoder}_params%
-vspipe:      "{upstream}" %vspipe_params% {y4m_arg} - | "{downstream}" {pipe_arg} %{encoder}_params%
-avs2yuv:     "{upstream}" %avs2yuv_params% - | "{downstream}" {pipe_arg} %{encoder}_params%
-avs2pipemod: "{upstream}" %avs2pipemod_params% -y4mp | "{downstream}" {pipe_arg} %{encoder}_params%
-svfi:        "{upstream}" %svfi_params% --pipe-out | "{downstream}" {pipe_arg} %{encoder}_params%
+> 以下模板使用平台中立的伪代码变量。LLM 需根据目标平台转换变量语法：
+> - Windows cmd: `%variable%`
+> - Windows PS: `$variable`
+> - macOS/Linux sh: `$variable`
+
+```pseudocode
+ffmpeg:      QUOTE(upstream) $ffmpeg_params -f yuv4mpegpipe -an -strict unofficial - | QUOTE(downstream) {pipe_arg} $x264_params/$x265_params/$svtav1_params
+vspipe:      QUOTE(upstream) $vspipe_params {y4m_arg} - | QUOTE(downstream) {pipe_arg} $x264_params/$x265_params/$svtav1_params
+avs2yuv:     QUOTE(upstream) $avs2yuv_params - | QUOTE(downstream) {pipe_arg} $x264_params/$x265_params/$svtav1_params
+avs2pipemod: QUOTE(upstream) $avs2pipemod_params -y4mp | QUOTE(downstream) {pipe_arg} $x264_params/$x265_params/$svtav1_params
+svfi:        QUOTE(upstream) $svfi_params --pipe-out | QUOTE(downstream) {pipe_arg} $x264_params/$x265_params/$svtav1_params
 ```
 
 ## x264 编码器预设
@@ -65,7 +73,9 @@ svfi:        "{upstream}" %svfi_params% --pipe-out | "{downstream}" {pipe_arg} %
 部分修改版（Mod）x264 支持 `--fgo`（Film Grain Optimization）:
 - 通用预设: `--fgo 10`
 - 素材预设: `--fgo 15`
-- 检测方法: `x264.exe --fullhelp | findstr fgo`
+- 检测方法:
+  - Windows: `x264.exe --fullhelp | findstr fgo`
+  - macOS/Linux: `x264 --fullhelp | grep fgo`
 
 ## x265 编码器预设
 
@@ -114,7 +124,9 @@ svfi:        "{upstream}" %svfi_params% --pipe-out | "{downstream}" {pipe_arg} %
 
 ### 可选: --enable-dlf 2
 部分修改版 SVT-AV1（如 SVT-AV1-Essential）支持高精度去块滤镜:
-- 检测方法: `SvtAv1EncApp.exe --help | findstr enable-dlf`
+- 检测方法:
+  - Windows: `SvtAv1EncApp.exe --help | findstr enable-dlf`
+  - macOS/Linux: `SvtAv1EncApp --help | grep enable-dlf`
 
 ## x265 动态搜索范围 (MERange)
 
