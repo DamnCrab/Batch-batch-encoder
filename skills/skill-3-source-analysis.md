@@ -76,7 +76,7 @@ FUNCTION acquire_video_source(platform, upstream_code):
 
         CASE "e":  # SVFI — 仅 Windows
             IF platform != "Windows":
-                REPORT "❌ SVFI 仅支持 Windows 平台"
+                REPORT "❌ SVFI 仅支持 Windows 平台，建议使用 VapourSynth (vspipe) 作为替代方案"
                 ABORT
 
             # 自动搜索 SVFI 配置目录

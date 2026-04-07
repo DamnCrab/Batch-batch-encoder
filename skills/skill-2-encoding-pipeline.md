@@ -90,11 +90,11 @@ FUNCTION find_tool(platform, tool_name):
     ELSE:
         ASK_USER "请输入 {tool_name} 的完整路径"
 
-    RETURN user_provided_path
-
-    # 3. vspipe 特殊处理：检测 Y4M 参数支持
+    # vspipe 特殊处理：检测 Y4M 参数支持
     IF tool_name == "vspipe":
-        CALL detect_vspipe_y4m_arg(platform, found_path)
+        CALL detect_vspipe_y4m_arg(platform, tool_path)
+
+    RETURN tool_path
 ```
 
 #### vspipe Y4M 参数检测

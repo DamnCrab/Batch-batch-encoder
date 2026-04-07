@@ -73,9 +73,11 @@ FUNCTION get_search_paths(platform, tool_name):
     IF platform == "Windows":
         SWITCH tool_name:
             "vspipe":       APPEND "C:\Program Files\VapourSynth\core\"
-            "svfi":         APPEND "{drive}:\SteamLibrary\steamapps\common\SVFI\"
-            "ffmpeg":       APPEND "C:\ffmpeg\bin\", "{drive}:\ffmpeg\bin\"
-        # Windows 特有：遍历盘符 C-Z
+            "svfi":
+                # 遍历所有盘符 C-Z 查找 Steam 安装
+                FOR drive IN ['C'..'Z']:
+                    APPEND "{drive}:\SteamLibrary\steamapps\common\SVFI\"
+            "ffmpeg":       APPEND "C:\ffmpeg\bin\", "C:\Program Files\ffmpeg\bin\"
         
     ELIF platform == "macOS":
         SWITCH tool_name:
