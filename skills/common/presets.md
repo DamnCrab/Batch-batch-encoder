@@ -141,7 +141,7 @@ svfi:        "{upstream}" %svfi_params% --pipe-out | "{downstream}" {pipe_arg} %
 
 ## 关键帧间隔 (Keyint) 计算
 
-- 公式: `keyint = round(fps × 用户指定秒数)`
+- 公式: `keyint = Math.Round(fps × 用户指定秒数)` （四舍五入取整，即 .NET `[math]::Round()` 的银行家舍入法）
 - 用户选择范围建议:
   - 低功耗/多轨剪辑: 6–7 秒
   - 一般（默认）: 8–10 秒

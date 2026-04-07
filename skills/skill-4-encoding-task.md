@@ -24,7 +24,7 @@
 
 **LLM 执行：**
 
-1. 在 `%USERPROFILE%\bbenc\` 目录查找最新的 `temp_v_info*.csv` 文件
+1. 在 `%USERPROFILE%\bbenc\` 目录查找 `temp_v_info*.csv` 文件，按**文件修改时间**（LastWriteTime）降序排列，取最新的一个
 2. 读取 `temp_s_info.csv`
 
 **CSV 列映射：**
